@@ -1,79 +1,162 @@
 ﻿using System;
 
-class Program
+namespace ShopSystem
 {
-    static void Main()
+    class Program
     {
-        double p1 = 19800.00;
-        double p2 = 41300.00;
-        double p3 = 52000.00;
-        double p4 = 68000.00;
-        double p5 = 81000.00;
+        // Головна точка входу в програму
+        static void Main(string[] args)
+        {
+            Console.OutputEncoding = System.Text.Encoding.UTF8; // Щоб коректно відображалась кирилиця
+            Console.Title = "Лабораторна робота: Магазин Електроніки";
+            
+            Console.WriteLine("Вітаємо у системі керування магазином!");
+            ShowMenu(); // Запуск рекурсивного меню
+        }
 
-        string car1 = "Orion Nova";
-        string car2 = "Atlas Ridge";
-        string car3 = "Voltara Pulse";
-        string car4 = "Momentum GT";
-        string car5 = "Prestige Elite";
+        // --- ГОЛОВНЕ МЕНЮ (Рекурсивна функція) ---
+        static void ShowMenu()
+        {
+            Console.WriteLine("\n--- ГОЛОВНЕ МЕНЮ ---");
+            Console.WriteLine("1. Переглянути товари (Каталог)");
+            Console.WriteLine("2. Розрахувати вартість покупки (з Лаб. 1)");
+            Console.WriteLine("3. Інформація про магазин");
+            Console.WriteLine("4. Налаштування");
+            Console.WriteLine("0. Вихід");
+            Console.Write("Ваш вибір: ");
 
-        double unit1, unit2, unit3, unit4, unit5;
+            try
+            {
+                // Зчитуємо вибір користувача
+                int choice = int.Parse(Console.ReadLine());
 
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("В наявності такі авто:"); 
-        Console.ResetColor();
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine(car1 + " " + p1 + " $;"); 
-        Console.WriteLine(car2 + " " + p2 + " $;"); 
-        Console.WriteLine(car3 + " " + p3 + " $;"); 
-        Console.WriteLine(car4 + " " + p4 + " $;"); 
-        Console.WriteLine(car5 + " " + p5 + " $;");
-        Console.ResetColor();
+                // Обробка вибору через switch
+                switch (choice)
+                {
+                    case 1:
+                        ShowProducts();
+                        break;
+                    case 2:
+                        CalculatePurchase(); // Інтеграція коду з попередньої роботи
+                        break;
+                    case 3:
+                        ShowShopInfo();
+                        break;
+                    case 4:
+                        ShowSettings(); // Це функція-заглушка
+                        break;
+                    case 0:
+                        Console.WriteLine("Дякуємо, що скористалися нашою системою. До побачення!");
+                        return; // Вихід з рекурсії, завершення програми
+                    default:
+                        Console.WriteLine("Помилка: Невірний номер пункту меню. Спробуйте ще раз.");
+                        break;
+                }
+            }
+            catch (FormatException)
+            {
+                // Обробка помилки, якщо ввели літери замість цифр
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Помилка: Будь ласка, введіть числове значення!");
+                Console.ResetColor();
+            }
+            catch (Exception ex)
+            {
+                // Обробка будь-яких інших непередбачених помилок
+                Console.WriteLine($"Виникла непередбачена помилка: {ex.Message}");
+            }
 
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine("Потрібно " + car1 + " (шт.)"); 
-        unit1 = Convert.ToDouble(Console.ReadLine());
-        Console.WriteLine("Потрібно " + car2 + " (шт.)"); 
-        unit2 = Convert.ToDouble(Console.ReadLine());
-        Console.WriteLine("Потрібно " + car3 + " (шт.)"); 
-        unit3 = Convert.ToDouble(Console.ReadLine());
-        Console.WriteLine("Потрібно " + car4 + " (шт.)"); 
-        unit4 = Convert.ToDouble(Console.ReadLine());
-        Console.WriteLine("Потрібно " + car5 + " (шт.)"); 
-        unit5 = Convert.ToDouble(Console.ReadLine());
-        Console.ResetColor();
+            // Рекурсивний виклик меню (повернення користувача до вибору)
+            ShowMenu();
+        }
 
-        double cost1 = p1 * unit1;
-        double cost2 = p2 * unit2;
-        double cost3 = p3 * unit3;
-        double cost4 = p4 * unit4;
-        double cost5 = p5 * unit5;
+        // --- ФУНКЦІЇ РЕАЛІЗАЦІЇ ПУНКТІВ МЕНЮ ---
 
-        double discount = new Random().NextDouble() * 10;
-        double discountT = Math.Round(discount, 2);
+        // Пункт 1: Перегляд товарів (Проста реалізація)
+        static void ShowProducts()
+        {
+            Console.Clear();
+            Console.WriteLine("--- КАТАЛОГ ТОВАРІВ ---");
+            Console.WriteLine("1. Ноутбук Gaming Pro - 45000 грн");
+            Console.WriteLine("2. Мишка бездротова - 800 грн");
+            Console.WriteLine("3. Клавіатура механічна - 2500 грн");
+            Console.WriteLine("4. Монітор 27 дюймів - 9000 грн");
+            Console.WriteLine("\nНатисніть Enter, щоб повернутися...");
+            Console.ReadLine();
+        }
 
-        double sum = cost1 + cost2 + cost3 + cost4 + cost5;
-        double total = sum * (1 - discount / 100);
+        // Пункт 2: Розрахунок (Логіка з Лабораторної №1 + параметри ref/out)
+        static void CalculatePurchase()
+        {
+            Console.Clear();
+            Console.WriteLine("--- КАЛЬКУЛЯТОР ПОКУПКИ ---");
 
-        total = Math.Round(total, 2);
+            try
+            {
+                Console.Write("Введіть ціну товару (грн): ");
+                double price = double.Parse(Console.ReadLine());
 
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Деталізація замовлення:");
-        Console.ResetColor();
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Вартість " + car1 + " за одиницю "  + p1 + "$" + ". Загальна: " + cost1 + " $.");
-        Console.WriteLine("Вартість " + car2 + " за одиницю "  + p2 + "$" + ". Загальна: " + cost2 + " $.");
-        Console.WriteLine("Вартість " + car3 + " за одиницю " + p3 + "$" + ". Загальна: " + cost3 + " $.");
-        Console.WriteLine("Вартість " + car4 + " за одиницю "  + p4 + "$" + ". Загальна: " + cost4 + " $.");
-        Console.WriteLine("Вартість " + car5 + " за одиницю " + p5 + "$" + ". Загальна: " + cost5 + " $.");    
-      
-        Console.ResetColor();
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine("Знижка: " + discountT + " %");
-        Console.ResetColor();
+                Console.Write("Введіть кількість (шт): ");
+                int quantity = int.Parse(Console.ReadLine());
 
-        Console.ForegroundColor = ConsoleColor.Blue;
-        Console.WriteLine("Загальна вартість замовлення: " + total + " $.");
+                if (price < 0 || quantity < 0)
+                {
+                    Console.WriteLine("Помилка: Числа не можуть бути від'ємними.");
+                    return;
+                }
 
-        Console.ReadKey();
+                double total;
+                // Виклик допоміжної функції для розрахунку
+                CalculateTotal(price, quantity, out total);
+
+                Console.WriteLine($"Загальна сума без знижки: {total} грн");
+
+                // Застосування знижки, якщо сума велика (змінюємо total через ref)
+                ApplyDiscount(ref total);
+
+                Console.WriteLine($"Сума до сплати (зі знижкою): {total} грн");
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Помилка введення даних! Потрібно вводити числа.");
+            }
+            
+            Console.WriteLine("\nНатисніть Enter, щоб продовжити...");
+            Console.ReadLine();
+        }
+
+        // Допоміжна функція з параметром out
+        static void CalculateTotal(double p, int q, out double result)
+        {
+            result = p * q;
+        }
+
+        // Допоміжна функція з параметром ref (змінює існуючу змінну)
+        static void ApplyDiscount(ref double sum)
+        {
+            if (sum > 10000)
+            {
+                Console.WriteLine("Ваша покупка більше 10000 грн. Вам надано знижку 10%!");
+                sum = sum * 0.9;
+            }
+            else
+            {
+                Console.WriteLine("Знижка не передбачена (сума менше 10000 грн).");
+            }
+        }
+
+        // Пункт 3: Інформація
+        static void ShowShopInfo()
+        {
+            Console.WriteLine("\n[Інфо]: Магазин 'IT-Світ'. Працюємо з 09:00 до 21:00. Тел: 555-1234");
+        }
+
+        // Пункт 4: Налаштування (Заглушка)
+        static void ShowSettings()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\n[Увага]: Функція 'Налаштування' знаходиться в розробці.");
+            Console.ResetColor();
+        }
     }
 }
